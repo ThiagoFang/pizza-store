@@ -19,3 +19,5 @@ An interactive pizza shopping site, where you can choose the pizza, size and qua
   <li>Aplicação de desconto</li>
   <li>Design Responsivo</li>
 </ul>
+
+<h2><a href="https://thiagofang.github.io/pizza-store/">Vizualize Aqui</h2>
