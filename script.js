@@ -11,7 +11,7 @@ pizzaJson.map((item, index)=>{
     pizzaItem.setAttribute('data-key', index);
     pizzaItem.querySelector('.pizza-item--img img').src = item.img;
     pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
-    pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$${item.price.toFixed(2)}`;
+    pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$${item.price[2].toFixed(2)}`;
     pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
     //Open Modal
     pizzaItem.querySelector('a').addEventListener('click', openModal)
@@ -30,6 +30,9 @@ document.querySelectorAll('.pizzaInfo--size').forEach((size,sizeIndex)=>{
     size.addEventListener('click', e=>{
         document.querySelector('.pizzaInfo--size.selected').classList.remove('selected')
         size .classList.add('selected')
+        updateModalSizePrice()
+        modalQt = 1
+        updateModalQt()
     })
 });
 
@@ -64,7 +67,7 @@ function updateModal(key){
     document.querySelector('.pizzaBig img').src = pizzaJson[key].img
     document.querySelector('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
     document.querySelector('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
-    document.querySelector('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
+    document.querySelector('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price[2].toFixed(2)}`;
  
     updateModalQt()
 
@@ -75,6 +78,12 @@ function updateModal(key){
         }
         size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex];
     });
+}
+
+function updateModalSizePrice(){
+    const selectedPizza = document.querySelector('.pizzaInfo--size.selected').getAttribute('data-key');
+    const atualPrice = pizzaJson[modalKey].price[selectedPizza]
+    document.querySelector('.pizzaInfo--actualPrice').innerHTML = `R$ ${atualPrice.toFixed(2)}`
 }
 
 function modalQtRemove(){
@@ -98,7 +107,8 @@ function updateModalQt(){
 }
 
 function updateModalPrice(){
-    const atualPrice = modalQt * pizzaJson[modalKey].price
+    const selectedPizza = document.querySelector('.pizzaInfo--size.selected').getAttribute('data-key');
+    const atualPrice = modalQt * pizzaJson[modalKey].price[selectedPizza]
     document.querySelector('.pizzaInfo--actualPrice').innerHTML = `R$ ${atualPrice.toFixed(2)}`;
 }
 
@@ -138,7 +148,7 @@ function updateCartInfo() {
     let subtotal = 0;
     for(let i in cart){
         const pizzaData = pizzaJson.find(item => item.id == cart[i].id);
-        subtotal += pizzaData.price * cart[i].amount;
+        subtotal += pizzaData.price[cart[i].size] * cart[i].amount;
 
         const cartItem = document.querySelector('.models .cart--item').cloneNode(true);
 
